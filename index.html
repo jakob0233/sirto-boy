@@ -1,0 +1,551 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#090909" />
+  <meta name="description" content="RAPDROP – kommende und neue Deutschrap Releases mit Live-Countdown." />
+  <title>RAPDROP — Deutschrap Releases</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #070707;
+      --panel: rgba(20,20,20,.78);
+      --panel-2: #111111;
+      --panel-3: #161616;
+      --text: #f6f6f6;
+      --muted: #999;
+      --line: rgba(255,255,255,.09);
+      --accent: #c7ff37;
+      --accent-2: #7c4dff;
+      --danger: #ff5e6c;
+      --shadow: 0 24px 80px rgba(0,0,0,.38);
+      --radius: 24px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background:
+        radial-gradient(circle at 72% -8%, rgba(124,77,255,.16), transparent 28%),
+        radial-gradient(circle at 10% 12%, rgba(199,255,55,.08), transparent 24%),
+        var(--bg);
+      color: var(--text);
+      font-family: Inter, system-ui, sans-serif;
+      min-height: 100vh;
+    }
+    button, input { font: inherit; }
+    button { border: 0; }
+    a { color: inherit; text-decoration: none; }
+
+    .noise {
+      position: fixed; inset: 0; pointer-events: none; opacity: .035; z-index: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 160 160' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.25'/%3E%3C/svg%3E");
+    }
+
+    .shell { position: relative; z-index: 1; max-width: 1280px; margin: 0 auto; padding: 0 24px 56px; }
+    .topbar {
+      position: sticky; top: 0; z-index: 20;
+      backdrop-filter: blur(18px);
+      background: rgba(7,7,7,.78);
+      border-bottom: 1px solid var(--line);
+    }
+    .nav {
+      max-width: 1280px; margin: 0 auto; padding: 17px 24px;
+      display: flex; align-items: center; gap: 22px;
+    }
+    .logo {
+      display: flex; align-items: baseline; gap: 7px;
+      font-family: "Space Grotesk", sans-serif; font-weight: 800; letter-spacing: -.045em;
+      font-size: 25px;
+    }
+    .logo-dot { width: 8px; height: 8px; border-radius: 999px; background: var(--accent); display:inline-block; box-shadow: 0 0 16px rgba(199,255,55,.8); }
+    .nav-links { display: flex; gap: 4px; margin-left: 10px; }
+    .nav-link {
+      color: #aaa; padding: 10px 12px; border-radius: 12px; font-size: 14px; font-weight: 600; cursor: pointer;
+      transition: .2s ease;
+    }
+    .nav-link:hover, .nav-link.active { color: #fff; background: rgba(255,255,255,.06); }
+
+    .search {
+      margin-left: auto; display:flex; align-items:center; gap:10px; min-width: 260px;
+      background: #111; border: 1px solid var(--line); border-radius: 14px; padding: 10px 13px;
+    }
+    .search svg { width: 16px; height: 16px; color:#777; flex:none; }
+    .search input { width:100%; border:0; outline:0; background:transparent; color:#fff; font-size:14px; }
+    .search input::placeholder { color:#696969; }
+
+    .hero {
+      margin-top: 30px; display:grid; grid-template-columns: 1.2fr .8fr; gap: 18px;
+    }
+    .hero-card {
+      min-height: 440px; border:1px solid var(--line); border-radius: 30px; overflow:hidden; position:relative;
+      background:
+        radial-gradient(circle at 80% 10%, rgba(199,255,55,.18), transparent 24%),
+        radial-gradient(circle at 0 100%, rgba(124,77,255,.23), transparent 38%),
+        linear-gradient(145deg, #151515 0%, #090909 70%);
+      box-shadow: var(--shadow);
+    }
+    .hero-card::after {
+      content:""; position:absolute; inset:-20% -10%; background: conic-gradient(from 120deg, transparent 0 65%, rgba(255,255,255,.08), transparent 72%);
+      animation: spin 20s linear infinite; opacity:.35;
+    }
+    @keyframes spin { to { transform:rotate(360deg); } }
+
+    .hero-inner { position:relative; z-index:2; padding: 36px; height:100%; display:flex; flex-direction:column; justify-content:flex-end; }
+    .eyebrow { font-size:12px; font-weight:800; letter-spacing:.16em; text-transform:uppercase; color:var(--accent); }
+    .hero-title { font-family:"Space Grotesk",sans-serif; font-size: clamp(42px, 7vw, 78px); line-height:.9; letter-spacing:-.06em; max-width: 700px; margin: 11px 0 12px; }
+    .hero-sub { color:#c9c9c9; max-width:620px; line-height:1.6; font-size:15px; }
+    .hero-meta { display:flex; flex-wrap:wrap; gap: 8px; margin-top:22px; }
+    .chip { border:1px solid var(--line); background:rgba(0,0,0,.28); padding:8px 11px; border-radius:999px; font-size:12px; color:#d4d4d4; }
+    .hero-actions { display:flex; gap:10px; margin-top:20px; }
+    .btn {
+      border-radius: 13px; padding: 12px 16px; cursor:pointer; font-size:13px; font-weight:800;
+      transition: .2s ease; display:inline-flex; align-items:center; justify-content:center; gap:8px;
+    }
+    .btn-primary { background:var(--accent); color:#0a0a0a; }
+    .btn-primary:hover { transform:translateY(-2px); box-shadow:0 12px 28px rgba(199,255,55,.15); }
+    .btn-ghost { color:#fff; background:rgba(255,255,255,.06); border:1px solid var(--line); }
+    .btn-ghost:hover { background:rgba(255,255,255,.1); }
+
+    .next-panel { background: linear-gradient(180deg, #121212, #0b0b0b); border:1px solid var(--line); border-radius:30px; padding:24px; box-shadow:var(--shadow); }
+    .section-kicker { font-size:12px; color:#777; text-transform:uppercase; letter-spacing:.15em; font-weight:800; }
+    .next-title { font-family:"Space Grotesk",sans-serif; font-size:34px; margin:7px 0 2px; letter-spacing:-.04em; }
+    .artist { color:#b0b0b0; font-weight:600; font-size:14px; }
+    .cover {
+      aspect-ratio:1 / 1; border-radius:22px; overflow:hidden; position:relative;
+      display:flex; align-items:flex-end; justify-content:flex-start; padding:20px;
+      border:1px solid rgba(255,255,255,.1);
+      background:
+        radial-gradient(circle at 70% 22%, rgba(255,255,255,.24), transparent 18%),
+        linear-gradient(135deg, #252525, #7c4dff 48%, #c7ff37 160%);
+      isolation:isolate;
+    }
+    .cover::before {
+      content:""; position:absolute; inset:14%; border-radius:50%;
+      background:rgba(0,0,0,.34); filter: blur(1px); z-index:-1;
+      box-shadow: 0 0 0 24px rgba(255,255,255,.04), 0 0 0 56px rgba(255,255,255,.025);
+    }
+    .cover-word { font-family:"Space Grotesk",sans-serif; font-weight:900; font-size: clamp(35px, 7vw, 72px); line-height:.85; letter-spacing:-.08em; max-width:80%; }
+    .next-cover { margin-top:18px; }
+    .countdown {
+      display:grid; grid-template-columns: repeat(4,1fr); gap:8px; margin-top:18px;
+    }
+    .time-box {
+      border:1px solid var(--line); background:#0b0b0b; border-radius:15px; padding:11px 7px; text-align:center;
+    }
+    .time-num { font-family:"Space Grotesk",sans-serif; font-size:26px; font-weight:800; letter-spacing:-.05em; }
+    .time-label { font-size:9px; letter-spacing:.1em; color:#666; text-transform:uppercase; font-weight:700; margin-top:2px; }
+
+    .section { margin-top:44px; }
+    .section-head { display:flex; align-items:end; justify-content:space-between; gap:15px; margin-bottom:17px; }
+    .section-title { font-family:"Space Grotesk",sans-serif; font-size:28px; letter-spacing:-.045em; margin:4px 0 0; }
+    .muted { color:#777; font-size:13px; }
+    .filters { display:flex; flex-wrap:wrap; gap:8px; }
+    .filter {
+      border:1px solid var(--line); background:#0f0f0f; color:#999; padding:9px 11px; border-radius:999px; cursor:pointer; font-size:12px; font-weight:700;
+    }
+    .filter.active, .filter:hover { color:#0b0b0b; background:#fff; border-color:#fff; }
+
+    .releases { display:grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap:14px; }
+    .card {
+      border:1px solid var(--line); background:linear-gradient(180deg, #121212, #0d0d0d); border-radius:20px; padding:10px;
+      transition:.2s ease; cursor:pointer; min-width:0;
+    }
+    .card:hover { transform:translateY(-4px); border-color:rgba(255,255,255,.18); box-shadow:0 16px 36px rgba(0,0,0,.25); }
+    .card .cover { border-radius:15px; padding:14px; }
+    .card .cover-word { font-size:34px; }
+    .status-row { display:flex; justify-content:space-between; align-items:center; gap:8px; margin:12px 3px 5px; }
+    .status { font-size:9px; text-transform:uppercase; letter-spacing:.13em; font-weight:900; }
+    .status.soon { color:var(--accent); }
+    .status.out { color:#888; }
+    .date { font-size:10px; color:#666; }
+    .card-title { font-size:15px; font-weight:800; margin:0 3px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .card-artist { font-size:12px; color:#898989; margin:5px 3px 2px; }
+    .card-bottom { display:flex; justify-content:space-between; align-items:center; gap:7px; margin:12px 3px 1px; }
+    .mini-count { color:#d9d9d9; font-size:10px; font-weight:700; }
+    .spotify {
+      background:#1ed760; color:#061208; padding:8px 10px; border-radius:10px; font-size:10px; font-weight:900;
+      transition:.2s ease;
+    }
+    .spotify:hover { transform:scale(1.03); filter:brightness(1.05); }
+
+    .week { display:grid; grid-template-columns: repeat(7, minmax(0,1fr)); gap:10px; }
+    .day { border:1px solid var(--line); background:#0c0c0c; border-radius:18px; padding:13px; min-height:180px; }
+    .day.today { outline:1px solid rgba(199,255,55,.35); background:#10130c; }
+    .day-name { font-size:10px; font-weight:900; letter-spacing:.12em; text-transform:uppercase; color:#777; }
+    .day-num { font-family:"Space Grotesk",sans-serif; font-weight:800; font-size:27px; margin:4px 0 12px; }
+    .day-song { border-top:1px solid var(--line); padding:9px 0; }
+    .day-song strong { display:block; font-size:11px; }
+    .day-song span { display:block; color:#777; font-size:10px; margin-top:3px; }
+
+    .artists { display:grid; grid-template-columns: repeat(6, minmax(0,1fr)); gap:10px; }
+    .artist-card { border:1px solid var(--line); background:#0d0d0d; border-radius:18px; padding:12px; cursor:pointer; transition:.2s ease; }
+    .artist-card:hover { transform:translateY(-3px); background:#111; }
+    .avatar { width:100%; aspect-ratio:1; border-radius:14px; display:grid; place-items:center; font-family:"Space Grotesk",sans-serif; font-size:34px; font-weight:900; margin-bottom:10px; background:linear-gradient(135deg, #262626, #151515); }
+    .artist-card h3 { font-size:12px; margin:0; }
+    .artist-card p { color:#696969; font-size:10px; margin:4px 0 0; }
+
+    .empty {
+      border:1px dashed var(--line); border-radius:20px; min-height:180px; display:grid; place-items:center; color:#666; padding:30px; text-align:center;
+      grid-column:1 / -1;
+    }
+
+    .footer { margin-top:48px; border-top:1px solid var(--line); padding-top:18px; color:#555; display:flex; justify-content:space-between; gap:10px; font-size:11px; }
+
+    @media (max-width: 1050px) {
+      .hero { grid-template-columns:1fr; }
+      .next-panel { display:grid; grid-template-columns: 160px 1fr; gap:20px; align-items:center; }
+      .next-cover { margin:0; }
+      .releases { grid-template-columns: repeat(3,1fr); }
+      .artists { grid-template-columns: repeat(4,1fr); }
+      .week { overflow-x:auto; grid-template-columns: repeat(7, 150px); padding-bottom:4px; }
+    }
+    @media (max-width: 760px) {
+      .shell { padding:0 14px 36px; }
+      .nav { padding:13px 14px; flex-wrap:wrap; }
+      .nav-links { order:3; width:100%; overflow-x:auto; }
+      .nav-link { white-space:nowrap; }
+      .search { min-width:0; width:100%; order:2; margin-left:0; }
+      .hero-card { min-height:430px; }
+      .hero-inner { padding:24px; }
+      .releases { grid-template-columns: repeat(2,1fr); }
+      .artists { grid-template-columns: repeat(3,1fr); }
+      .next-panel { grid-template-columns:1fr; }
+      .next-cover { max-width:220px; width:100%; }
+      .footer { flex-direction:column; }
+    }
+    @media (max-width: 470px) {
+      .releases { grid-template-columns:1fr; }
+      .artists { grid-template-columns: repeat(2,1fr); }
+    }
+  </style>
+</head>
+<body>
+  <div class="noise"></div>
+  <header class="topbar">
+    <nav class="nav">
+      <a class="logo" href="#top" aria-label="RAPDROP Startseite">RAPDROP<span class="logo-dot"></span></a>
+      <div class="nav-links">
+        <a class="nav-link active" href="#week">Diese Woche</a>
+        <a class="nav-link" href="#upcoming">Kommende Releases</a>
+        <a class="nav-link" href="#artists">Artists</a>
+      </div>
+      <label class="search" aria-label="Releases durchsuchen">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        <input id="search" type="search" placeholder="Artist oder Song suchen …" />
+      </label>
+    </nav>
+  </header>
+
+  <main id="top" class="shell">
+    <section class="hero">
+      <article class="hero-card">
+        <div class="hero-inner">
+          <div class="eyebrow">Nächster Drop · Demo-Daten</div>
+          <div id="hero-title" class="hero-title">Loading…</div>
+          <div id="hero-sub" class="hero-sub">Die Demo-Releases sind austauschbar und für eine spätere API-Anbindung vorbereitet.</div>
+          <div id="hero-meta" class="hero-meta"></div>
+          <div class="hero-actions">
+            <button id="hero-spotify" class="btn btn-primary">Spotify öffnen ↗</button>
+            <button class="btn btn-ghost" onclick="document.querySelector('#upcoming').scrollIntoView({behavior:'smooth'})">Alle Releases</button>
+          </div>
+        </div>
+      </article>
+
+      <aside class="next-panel">
+        <div>
+          <div class="section-kicker">Countdown</div>
+          <div id="next-song" class="next-title">—</div>
+          <div id="next-artist" class="artist">—</div>
+          <div id="next-cover" class="cover next-cover"><div id="next-cover-word" class="cover-word">RD</div></div>
+        </div>
+        <div>
+          <div class="muted">Veröffentlicht am</div>
+          <div id="next-date" style="font-weight:800; margin-top:3px;">—</div>
+          <div id="countdown" class="countdown"></div>
+        </div>
+      </aside>
+    </section>
+
+    <section id="upcoming" class="section">
+      <div class="section-head">
+        <div>
+          <div class="section-kicker">Release Radar</div>
+          <h2 class="section-title">Kommende Releases</h2>
+          <div class="muted">Chronologisch sortiert · Countdown läuft live</div>
+        </div>
+        <div class="filters" role="tablist">
+          <button class="filter active" data-filter="all">Alle</button>
+          <button class="filter" data-filter="today">Heute</button>
+          <button class="filter" data-filter="week">Diese Woche</button>
+          <button class="filter" data-filter="next">Nächste Woche</button>
+          <button class="filter" data-filter="out">Draußen</button>
+        </div>
+      </div>
+      <div id="release-grid" class="releases"></div>
+    </section>
+
+    <section id="week" class="section">
+      <div class="section-head">
+        <div>
+          <div class="section-kicker">Wochenplan</div>
+          <h2 class="section-title">Diese Woche</h2>
+          <div class="muted">Alle Demo-Releases nach Wochentag</div>
+        </div>
+      </div>
+      <div id="week-grid" class="week"></div>
+    </section>
+
+    <section id="artists" class="section">
+      <div class="section-head">
+        <div>
+          <div class="section-kicker">Artist Hub</div>
+          <h2 class="section-title">Artists</h2>
+          <div class="muted">Tippe auf einen Artist, um seine Releases zu filtern.</div>
+        </div>
+      </div>
+      <div id="artist-grid" class="artists"></div>
+    </section>
+
+    <footer class="footer">
+      <span>RAPDROP · Deutschrap Release Radar</span>
+      <span>Demo-Daten · Keine echten aktuellen Releaseangaben</span>
+    </footer>
+  </main>
+
+  <script>
+    /*
+      RAPDROP DATA
+      Ersetze die Einträge später durch echte API-/DB-Daten.
+      Zeitstempel werden als lokale Zeit in Europe/Berlin behandelt.
+    */
+    const releases = [
+      { id:1, artist:"Reezy", title:"NACHTBUS", date:"2026-10-09T00:00:00+02:00", type:"upcoming", accent:"linear-gradient(135deg,#202020,#7c4dff)" },
+      { id:2, artist:"Sosa", title:"NO SIGNAL", date:"2026-10-09T00:00:00+02:00", type:"upcoming", accent:"linear-gradient(135deg,#111,#c7ff37)" },
+      { id:3, artist:"Thizzy", title:"MIDNIGHT RUN", date:"2026-10-09T00:00:00+02:00", type:"upcoming", accent:"linear-gradient(135deg,#191919,#ff5e6c)" },
+      { id:4, artist:"Luciano", title:"CITY LIGHTS", date:"2026-10-10T00:00:00+02:00", type:"upcoming", accent:"linear-gradient(135deg,#141414,#19d760)" },
+      { id:5, artist:"Ufo361", title:"AFTERHOURS", date:"2026-10-10T00:00:00+02:00", type:"upcoming", accent:"linear-gradient(135deg,#161616,#ff9a3d)" },
+      { id:6, artist:"Pashanim", title:"SPÄTSOMMER", date:"2026-10-16T00:00:00+02:00", type:"upcoming", accent:"linear-gradient(135deg,#202020,#32b7ff)" },
+      { id:7, artist:"Ski Aggu", title:"BERLINER NACHT", date:"2026-10-16T00:00:00+02:00", type:"upcoming", accent:"linear-gradient(135deg,#171717,#ff66c4)" },
+      { id:8, artist:"KALIM", title:"NO CAP", date:"2026-10-17T00:00:00+02:00", type:"upcoming", accent:"linear-gradient(135deg,#181818,#a4a4ff)" },
+      { id:9, artist:"Nimo", title:"KEIN FILTER", date:"2026-10-23T00:00:00+02:00", type:"upcoming", accent:"linear-gradient(135deg,#1b1b1b,#ffcf45)" },
+      { id:10, artist:"RIN", title:"NACH VORN", date:"2026-10-23T00:00:00+02:00", type:"upcoming", accent:"linear-gradient(135deg,#1a1a1a,#69e7c5)" },
+      { id:11, artist:"Jamule", title:"SO WIE DU", date:"2026-10-24T00:00:00+02:00", type:"upcoming", accent:"linear-gradient(135deg,#181818,#b46cff)" },
+      { id:12, artist:"Cro", title:"LATE NIGHT", date:"2026-10-25T00:00:00+02:00", type:"upcoming", accent:"linear-gradient(135deg,#191919,#efefef)" },
+      { id:13, artist:"BHZ", title:"BLOCKPARTY", date:"2026-10-03T00:00:00+02:00", type:"out", accent:"linear-gradient(135deg,#111,#777)" },
+      { id:14, artist:"01099", title:"HERBST", date:"2026-10-02T00:00:00+02:00", type:"out", accent:"linear-gradient(135deg,#111,#9c7448)" }
+    ];
+
+    const artists = [...new Set(releases.map(r=>r.artist))].sort((a,b)=>a.localeCompare(b));
+    let activeFilter = "all";
+    let activeArtist = null;
+    let searchTerm = "";
+
+    const $ = (s) => document.querySelector(s);
+    const escapeHTML = (s) => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));
+
+    function spotifyUrl(r) {
+      return "https://open.spotify.com/search/" + encodeURIComponent(r.artist + " " + r.title);
+    }
+
+    function initials(name) {
+      return name.split(/\s+/).map(x=>x[0]).slice(0,2).join("").toUpperCase();
+    }
+
+    function diffParts(ms) {
+      const total = Math.max(0, Math.floor(ms / 1000));
+      return {
+        days: Math.floor(total / 86400),
+        hours: Math.floor((total % 86400) / 3600),
+        mins: Math.floor((total % 3600) / 60),
+        secs: total % 60
+      };
+    }
+
+    function fmtDate(d) {
+      return new Intl.DateTimeFormat("de-DE", {
+        weekday:"long", day:"2-digit", month:"2-digit", year:"numeric",
+        hour:"2-digit", minute:"2-digit"
+      }).format(d);
+    }
+
+    function dayKey(date) {
+      const d = new Date(date);
+      return d.toISOString().slice(0,10);
+    }
+
+    function isSameDay(a,b) { return dayKey(a) === dayKey(b); }
+
+    function startOfWeek(d) {
+      const copy = new Date(d);
+      const day = (copy.getDay() + 6) % 7;
+      copy.setHours(0,0,0,0);
+      copy.setDate(copy.getDate() - day);
+      return copy;
+    }
+
+    function getStatus(r) {
+      return new Date(r.date) <= new Date() ? "out" : "soon";
+    }
+
+    function filteredReleases() {
+      const now = new Date();
+      const weekStart = startOfWeek(now);
+      const weekEnd = new Date(weekStart); weekEnd.setDate(weekEnd.getDate()+7);
+      const nextStart = new Date(weekEnd);
+      const nextEnd = new Date(nextStart); nextEnd.setDate(nextEnd.getDate()+7);
+
+      return releases
+        .filter(r => !activeArtist || r.artist === activeArtist)
+        .filter(r => {
+          const hay = (r.artist + " " + r.title).toLowerCase();
+          return !searchTerm || hay.includes(searchTerm.toLowerCase());
+        })
+        .filter(r => {
+          const d = new Date(r.date);
+          const status = getStatus(r);
+          if (activeFilter === "today") return isSameDay(d, now);
+          if (activeFilter === "week") return d >= weekStart && d < weekEnd;
+          if (activeFilter === "next") return d >= nextStart && d < nextEnd;
+          if (activeFilter === "out") return status === "out";
+          return true;
+        })
+        .sort((a,b)=>new Date(a.date)-new Date(b.date));
+    }
+
+    function renderHero() {
+      const next = releases
+        .filter(r => new Date(r.date) > new Date())
+        .sort((a,b)=>new Date(a.date)-new Date(b.date))[0] || releases[0];
+
+      $("#hero-title").textContent = next.artist + " — " + next.title;
+      $("#hero-sub").textContent = "Der nächste Drop auf RAPDROP. Demo-Eintrag – später direkt mit echten Release-Daten/Spotify-Links austauschbar.";
+      $("#hero-meta").innerHTML = "<span class='chip'>" + escapeHTML(fmtDate(new Date(next.date))) + "</span><span class='chip'>" + escapeHTML(next.artist) + "</span><span class='chip'>Release Radar</span>";
+      $("#hero-spotify").onclick = () => window.open(spotifyUrl(next), "_blank", "noopener");
+      $("#next-song").textContent = next.title;
+      $("#next-artist").textContent = next.artist;
+      $("#next-date").textContent = fmtDate(new Date(next.date));
+      $("#next-cover").style.background = next.accent;
+      $("#next-cover-word").textContent = initials(next.artist);
+    }
+
+    function countdownHTML(ms) {
+      const p = diffParts(ms);
+      return "<div class='time-box'><div class='time-num'>" + String(p.days).padStart(2,"0") + "</div><div class='time-label'>Tage</div></div>" +
+             "<div class='time-box'><div class='time-num'>" + String(p.hours).padStart(2,"0") + "</div><div class='time-label'>Std.</div></div>" +
+             "<div class='time-box'><div class='time-num'>" + String(p.mins).padStart(2,"0") + "</div><div class='time-label'>Min.</div></div>" +
+             "<div class='time-box'><div class='time-num'>" + String(p.secs).padStart(2,"0") + "</div><div class='time-label'>Sek.</div></div>";
+    }
+
+    function updateCountdown() {
+      const next = releases.filter(r=>new Date(r.date)>new Date()).sort((a,b)=>new Date(a.date)-new Date(b.date))[0];
+      if (!next) return;
+      $("#countdown").innerHTML = countdownHTML(new Date(next.date)-new Date());
+      document.querySelectorAll("[data-countdown]").forEach(el => {
+        const target = new Date(el.dataset.countdown).getTime();
+        const ms = target - Date.now();
+        if (ms <= 0) {
+          el.textContent = "JETZT DRAUSSEN";
+          el.style.color = "#999";
+        } else {
+          const p = diffParts(ms);
+          el.textContent = String(p.days).padStart(2,"0")+"T · "+String(p.hours).padStart(2,"0")+"S · "+String(p.mins).padStart(2,"0")+"M";
+        }
+      });
+    }
+
+    function cardHTML(r) {
+      const status = getStatus(r);
+      const date = new Date(r.date);
+      const out = status === "out";
+      return `
+        <article class="card" onclick="window.open('${spotifyUrl(r)}','_blank','noopener')" aria-label="${escapeHTML(r.artist+" "+r.title)}">
+          <div class="cover" style="background:${r.accent}">
+            <div class="cover-word">${escapeHTML(initials(r.artist))}</div>
+          </div>
+          <div class="status-row">
+            <span class="status ${out ? "out":"soon"}">${out ? "Draussen":"Kommt bald"}</span>
+            <span class="date">${escapeHTML(date.toLocaleDateString("de-DE",{day:"2-digit",month:"2-digit"}))}</span>
+          </div>
+          <h3 class="card-title">${escapeHTML(r.title)}</h3>
+          <div class="card-artist">${escapeHTML(r.artist)} · ${escapeHTML(date.toLocaleTimeString("de-DE",{hour:"2-digit",minute:"2-digit"}))}</div>
+          <div class="card-bottom">
+            <span class="mini-count" data-countdown="${r.date}">${out ? "Bereits erschienen":"wird berechnet …"}</span>
+            <span class="spotify" onclick="event.stopPropagation(); window.open('${spotifyUrl(r)}','_blank','noopener')">Spotify ↗</span>
+          </div>
+        </article>
+      `;
+    }
+
+    function renderReleases() {
+      const list = filteredReleases();
+      $("#release-grid").innerHTML = list.length
+        ? list.map(cardHTML).join("")
+        : "<div class='empty'>Keine Releases für diesen Filter gefunden.<br>Probier einen anderen Filter oder such nach einem anderen Artist.</div>";
+      updateCountdown();
+    }
+
+    function renderWeek() {
+      const container = $("#week-grid");
+      const now = new Date();
+      const start = startOfWeek(now);
+      const names = ["Montag","Dienstag","Mittwoch","Donnerstag","Freitag","Samstag","Sonntag"];
+      container.innerHTML = names.map((name, i) => {
+        const d = new Date(start); d.setDate(d.getDate()+i);
+        const songs = releases.filter(r=>isSameDay(new Date(r.date),d)).sort((a,b)=>new Date(a.date)-new Date(b.date));
+        return `
+          <div class="day ${isSameDay(d,now) ? "today":""}">
+            <div class="day-name">${name}</div>
+            <div class="day-num">${String(d.getDate()).padStart(2,"0")}</div>
+            ${songs.length ? songs.map(r=>"<div class='day-song'><strong>"+escapeHTML(r.artist)+"</strong><span>"+escapeHTML(r.title)+"</span></div>").join("") : "<div class='day-song'><span>—</span></div>"}
+          </div>
+        `;
+      }).join("");
+    }
+
+    function renderArtists() {
+      $("#artist-grid").innerHTML = artists.map(a=>`
+        <button class="artist-card" onclick="selectArtist('${a.replace(/'/g,"\\'")}')">
+          <div class="avatar">${escapeHTML(initials(a))}</div>
+          <h3>${escapeHTML(a)}</h3>
+          <p>${releases.filter(r=>r.artist===a).length} Release(s)</p>
+        </button>
+      `).join("");
+    }
+
+    function selectArtist(artist) {
+      activeArtist = activeArtist === artist ? null : artist;
+      $("#search").value = "";
+      searchTerm = "";
+      renderReleases();
+      document.querySelector("#upcoming").scrollIntoView({behavior:"smooth", block:"start"});
+    }
+
+    document.querySelectorAll(".filter").forEach(btn => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll(".filter").forEach(b=>b.classList.remove("active"));
+        btn.classList.add("active");
+        activeFilter = btn.dataset.filter;
+        renderReleases();
+      });
+    });
+
+    $("#search").addEventListener("input", e => {
+      searchTerm = e.target.value.trim();
+      activeArtist = null;
+      renderReleases();
+    });
+
+    renderHero();
+    renderWeek();
+    renderArtists();
+    renderReleases();
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
+  </script>
+</body>
+</html>
